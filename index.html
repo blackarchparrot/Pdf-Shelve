@@ -1,227 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Suggest a PDF | PDF Shelve</title>
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
-body{
-    background:#0f172a;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    padding:20px;
-    position: relative;
-}
-.container{
-    width:100%;
-    max-width:700px;
-    background:#1e293b;
-    padding:35px;
-    border-radius:15px;
-    box-shadow:0 0 25px rgba(0,0,0,.4);
-}
-h1{
-    text-align:center;
-    margin-bottom:10px;
-}
-p{
-    text-align:center;
-    color:#cbd5e1;
-    margin-bottom:30px;
-}
-label{
-    display:block;
-    margin-top:18px;
-    margin-bottom:8px;
-    font-weight:bold;
-}
-input,select,textarea{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:8px;
-    background:#334155;
-    color:white;
-    font-size:16px;
-}
-input:focus,
-textarea:focus,
-select:focus{
-    outline:2px solid #3b82f6;
-}
-textarea{
-    resize:vertical;
-    min-height:120px;
-}
-button{
-    margin-top:25px;
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:8px;
-    background:#3b82f6;
-    color:white;
-    font-size:18px;
-    cursor:pointer;
-    transition:.3s;
-}
-button:hover{
-    background:#2563eb;
-}
-button:disabled {
-    background: #64748b;
-    cursor: not-allowed;
-}
-.note{
-    margin-top:25px;
-    padding:15px;
-    background:#0f172a;
-    border-left:5px solid #3b82f6;
-    border-radius:8px;
-    font-size:14px;
-    color:#cbd5e1;
-}
-footer{
-    text-align:center;
-    margin-top:25px;
-    color:#94a3b8;
-    font-size:14px;
-}
-a{
-    color:#60a5fa;
-    text-decoration:none;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Shelve</title>
+    <style>  
+        * {  
+            margin: 0;  
+            padding: 0;  
+            box-sizing: border-box;  
+            font-family: Arial, sans-serif;  
+        }  
+        body {  
+            background: #0f172a;  
+            color: white;  
+        }  
+        header {  
+            background: #1e293b;  
+            padding: 20px 8%;  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+        }  
+        .logo {  
+            font-size: 28px;  
+            font-weight: bold;  
+        }  
+        nav a {  
+            color: white;  
+            text-decoration: none;  
+        }  
+        .hero {  
+            text-align: center;  
+            padding: 80px 20px;  
+        }  
+        .hero h1 {  
+            font-size: 48px;  
+            margin-bottom: 15px;  
+        }  
+        .hero p {  
+            color: #cbd5e1;  
+            margin-bottom: 30px;  
+        }  
+        /* --- Floating Search Box Setup --- */
+        .search-container {  
+            max-width: 600px;  
+            margin: auto;  
+            position: relative; 
+        }  
+        
+        /* CLEANED SINGLE BUTTON DEFINITION */
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #0ea5e9;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+            white-space: nowrap;  /* Keeps text on one line */
+            width: max-content;   /* Shrinks box perfectly to text width */
+        }
+        .btn:hover {
+            background: #2563eb;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
 
-/* Floating Success Alert Banner */
-.popup-alert {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #10b981;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    display: none;
-    font-weight: bold;
-    animation: slideIn 0.3s ease-out;
-}
+        /* Responsive Mobile Layout Adjustments */
+        @media (max-width: 480px) { 
+            header { 
+                padding: 15px 4%; 
+                flex-wrap: nowrap; /* Forces logo and button onto the exact same line */
+            } 
+            .logo { 
+                font-size: 20px; 
+            } 
+            .btn { 
+                font-size: 12px; 
+                padding: 8px 12px; 
+            } 
+        }
 
-@keyframes slideIn {
-    from { transform: translateX(120%); }
-    to { transform: translateX(0); }
-}
-</style>
+        .search-container input {  
+            width: 100%;  
+            padding: 15px;  
+            border: none;  
+            border-radius: 10px;  
+            font-size: 18px;  
+            outline: none;
+            background: white;
+            color: #0f172a;
+        }  
+        /* The floating container */
+        .floating-results {
+            position: absolute;
+            top: 102%; 
+            left: 0;
+            width: 100%;
+            background: #1e293b;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            z-index: 100; 
+            max-height: 300px; 
+            overflow-y: auto; 
+            display: none; 
+            text-align: left;
+            border: 1px solid #334155;
+        }
+        /* Styling for files inside the dropdown */
+        .floating-results .pdf {  
+            background: transparent;  
+            padding: 15px 20px;  
+            margin: 0;  
+            border-bottom: 1px solid #334155;
+            border-radius: 0;
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+        }  
+        .floating-results .pdf:last-child {
+            border-bottom: none;
+        }
+        .floating-results .pdf:hover {
+            background: #334155;
+        }
+        .floating-results .pdf a {  
+            color: #38bdf8;  
+            text-decoration: none;  
+            font-weight: bold;
+        }  
+        #noResults {
+            padding: 15px 20px;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        section {  
+            padding: 60px 8%;  
+        }  
+        h2 {  
+            margin-bottom: 20px;  
+        }  
+        .grid {  
+            display: grid;  
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));  
+            gap: 20px;  
+        }  
+        .card {  
+            background: #1e293b;  
+            padding: 25px;  
+            border-radius: 12px;  
+            text-align: center;  
+            transition: .3s;  
+        }  
+        .card:hover {  
+            transform: translateY(-5px);  
+            background: #334155;  
+        }  
+        
+        .card-link {
+            text-decoration: none;
+            color: inherit; 
+            display: block; 
+        }
+        /* Static display for recently added section */
+        .static-list .pdf {
+            background: #1e293b;  
+            padding: 18px;  
+            margin: 10px 0;  
+            border-radius: 10px;  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+        }
+        .static-list .pdf a {
+            color: #38bdf8;  
+            text-decoration: none;  
+        }
+        footer {  
+            background: #1e293b;  
+            text-align: center;  
+            padding: 20px;  
+            color: #94a3b8;  
+        }  
+    </style>  
 </head>
 <body>
+<header>  
+    <div class="logo">📚 Learning Shelve</div>  
+    <nav><a href="suggestion.html" class="btn">📩 Request or Contribute</a></nav>
+</header>  
+<div class="hero">  
+    <h1>Your Digital Learning Library</h1>  
+    <p>Browse, search and download educational Learnings for free.</p>  
 
-<div id="successAlert" class="popup-alert">🎉 Suggestion Sent Successfully!</div>
+    <div class="search-container">  
+        <input type="text" id="searchInput" placeholder="Search Learnings..." autocomplete="off">  
+        
+        <div id="dropdownResults" class="floating-results">
+            <p id="noResults" style="display: none;">No matching files found.</p>
+        </div>
+    </div>  
 
-<div class="container">
-<h1>📚 Suggest a PDF</h1>
-<p>
-Can't find the PDF you're looking for?
-Submit your request and we'll try to add it.
-</p>
+    <a href="#library-section" class="btn">Browse Library</a>  
+</div>  
 
-<form id="suggestionForm" action="https://api.web3forms.com/submit" method="POST">
-    <input type="hidden" name="access_key" value="dd7e517b-6640-4436-af96-dd6b08e2048b">
-    <input type="hidden" name="subject" value="New PDF Suggestion">
+<section>  
+    <h2>Categories</h2>  
 
-    <label>Your Name</label>
-    <input type="text" name="Name" placeholder="Enter your name" required>
+    <div class="grid">  
+        <a href="engineering.html" class="card-link"><div class="card">📐 Engineering</div></a>  
+        <a href="computerscience.html" class="card-link"><div class="card">💻 Computer Science</div></a>  
+        <a href="math.html" class="card-link"><div class="card">📘 Mathematics</div></a>  
+        <a href="physics.html" class="card-link"><div class="card">⚛ Physics</div></a>  
+        <a href="chemistry.html" class="card-link"><div class="card">🧪 Chemistry</div></a>  
+        <a href="others.html" class="card-link"><div class="card">📖 Others</div></a>  
+    </div>  
+</section>
 
-    <label>Email (Optional)</label>
-    <input type="email" name="Email" placeholder="example@email.com">
+<section id="library-section">  
+    <h2>Recently Added</h2>  
+    <div class="static-list" id="masterFileList">
+        <div class="pdf">  
+            <span>Physics for Engineers Part 1</span>  
+            <a href="physicsforengineers.html">Download</a>  
+        </div>  
 
-    <label>Category</label>
-    <select name="Category">
-        <option>Engineering</option>
-        <option>Computer Science</option>
-        <option>Physics</option>
-        <option>Mathematics</option>
-        <option>Chemistry</option>
-        <option>Admission</option>
-        <option>Notes</option>
-        <option>Others</option>
-    </select>
+        <div class="pdf">  
+            <span>Elementary Linear Algebra</span>  
+            <a href="elementarylinearalgebra.html">Download</a>  
+        </div>  
 
-    <label>Book / PDF Name</label>
-    <input type="text" name="PDF Name" placeholder="Example: Engineering Mechanics" required>
+        <div class="pdf">  
+            <span>Digital Logic</span>  
+            <a href="#">Download</a>  
+        </div>  
+    </div>
+</section>  
 
-    <label>Author (Optional)</label>
-    <input type="text" name="Author" placeholder="Author Name">
+<section style="text-align:center;">  
+    <h2>Can't Find a Learning?</h2>  
+    <p style="margin:15px 0; color:#cbd5e1;">  
+        Suggest a missing Learning and we'll try to add it.  
+    </p>  
+    <a href="#" class="btn">Suggest a Learning</a>  
+</section>  
 
-    <label>Additional Details</label>
-    <textarea name="Details" placeholder="Edition, publisher, university, drive link, etc."></textarea>
-
-    <button type="submit" id="submitBtn">📤 Submit Suggestion</button>
-</form>
-
-<div class="note">
-    <strong>Note:</strong>
-    Please provide accurate information.
-    We review every suggestion before adding new PDFs to the library.
-</div>
-<footer>
-    <a href="index.html">⬅ Back to Home</a>
-</footer>
-</div>
+<footer>  
+    <p>© 2026 Learning Shelve</p>  
+    <p>Made by someone NITERian (TE-16) for Engineering students.</p>  
+</footer>  
 
 <script>
-document.getElementById('suggestionForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Stop standard blank page redirection
+    const searchInput = document.getElementById('searchInput');
+    const dropdownResults = document.getElementById('dropdownResults');
+    const noResultsMessage = document.getElementById('noResults');
     
-    const form = this;
-    const button = document.getElementById('submitBtn');
-    const alertBox = document.getElementById('successAlert');
-    
-    // Switch state UI elements to visually block double-clicks
-    button.disabled = true;
-    button.textContent = "Sending...";
+    // Get all original files from your master list below
+    const masterFiles = document.querySelectorAll('#masterFileList .pdf');
 
-    // Dispatch form package asynchronously
-    fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-    .then(async (response) => {
-        let json = await response.json();
-        if (response.status == 200) {
-            // Display notification panel on screen
-            alertBox.style.display = 'block';
-            form.reset(); // Wipe fields clean
-            
-            // Clear alert banner after 4 seconds
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 4000);
-        } else {
-            alert(json.message || "Something went wrong. Please try again.");
-        }
-    })
-    .catch(error => {
-        alert("Connection error. Check your internet connection.");
-    })
-    .finally(() => {
-        // Unlock button interactive loop
-        button.disabled = false;
-        button.textContent = "📤 Submit Suggestion";
+    // Dynamically clone files into the floating menu on page load so they exist there
+    masterFiles.forEach(file => {
+        let clone = file.cloneNode(true);
+        // Hide them initially
+        clone.style.display = 'none'; 
+        dropdownResults.appendChild(clone);
     });
-});
+
+    // Reference the newly added elements inside the floating dropdown
+    const floatingItems = dropdownResults.querySelectorAll('.pdf');
+
+    searchInput.addEventListener('keyup', function() {
+        let filterValue = this.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        // If search box is empty, hide the dropdown completely
+        if (filterValue === '') {
+            dropdownResults.style.display = 'none';
+            return;
+        }
+
+        // Show the dropdown wrapper because user is typing
+        dropdownResults.style.display = 'block';
+
+        // Filter the items inside the floating box
+        floatingItems.forEach(function(item) {
+            let fileName = item.querySelector('span').textContent.toLowerCase();
+            
+            if (fileName.includes(filterValue)) {
+                item.style.display = 'flex'; 
+                visibleCount++;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // Toggle "No results" message within the dropdown
+        if (visibleCount === 0) {
+            noResultsMessage.style.display = 'block';
+        } else {
+            noResultsMessage.style.display = 'none';
+        }
+    });
+
+    // Optional: Hide the dropdown if the user clicks anywhere else on the screen
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !dropdownResults.contains(e.target)) {
+            dropdownResults.style.display = 'none';
+        }
+    });
 </script>
 
 </body>

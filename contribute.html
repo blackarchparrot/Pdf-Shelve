@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contribute a PDF | Learning Shelve</title>
+<title>Contribute a PDF | PDF Shelve</title>
 <style>
 * {
     margin: 0;
@@ -71,15 +71,72 @@ textarea {
     min-height: 100px;
 }
 
-.drive-instructions {
+/* Smart Help Accordion Box Wrapper */
+.help-accordion {
     margin-top: 10px;
-    padding: 15px;
-    background: #2c241a;
-    border-left: 4px solid #f59e0b; /* Amber warning accent border */
-    border-radius: 6px;
+    background: #1e293b;
+    border: 1px solid #475569;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Toggable Header bar */
+.help-header {
+    background: #273549;
+    padding: 12px 15px;
     font-size: 14px;
-    color: #fde047;
-    line-height: 1.5;
+    font-weight: bold;
+    color: #38bdf8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+}
+
+.help-header:hover {
+    background: #334155;
+}
+
+/* Arrow indicator rotation styling */
+.help-header .arrow {
+    font-size: 10px;
+    transition: transform 0.3s ease;
+    color: #94a3b8;
+}
+
+.help-header.active .arrow {
+    transform: rotate(-180deg);
+}
+
+/* Hidden container details */
+.help-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding: 0 15px;
+    background: #111827;
+}
+
+/* Styling for content items inside help dropdown */
+.help-content p {
+    text-align: left;
+    margin: 12px 0 6px 0;
+    font-size: 14px;
+    color: white;
+}
+
+.help-content ol {
+    margin-left: 20px;
+    margin-bottom: 12px;
+    color: #cbd5e1;
+    font-size: 13.5px;
+}
+
+.help-content li {
+    margin-bottom: 6px;
+    line-height: 1.4;
 }
 
 button {
@@ -165,11 +222,6 @@ a {
     
     <label>Contributor Name (Optional)</label>
     <input type="text" name="Contributor Name" placeholder="Enter your name or keep anonymous">
-    <label>Contributor's Batch (Optional)</label>
-    <input type="text" name="Contributor Batch" placeholder="Enter your Batch or keep anonymous">
-    
-    <label>Mobile Number (Optional)</label>
-    <input type="numbet" name="Mobile" placeholder="+8801............">
     
     <label>Email Address (Optional)</label>
     <input type="email" name="Email" placeholder="example@email.com">
@@ -192,8 +244,22 @@ a {
     <label>Public Shareable Link (Google Drive, OneDrive, Mega, etc.)</label>
     <input type="url" name="Shareable Link" placeholder="https://drive.google.com/file/d/..." required>
     
-    <div class="drive-instructions">
-        ⚠️ <strong>Important:</strong> Please ensure your cloud link's sharing permissions are set to <strong>"Anyone with the link can view"</strong> so our team can access and review the file.
+    <div class="help-accordion">
+        <div class="help-header" id="helpToggle">
+            <span>❓ Need help getting your link?</span>
+            <span class="arrow" id="helpArrow">▼</span>
+        </div>
+        <div class="help-content" id="helpContent">
+            <p><strong>For Google Drive:</strong></p>
+            <ol>
+                <li>Right-click your PDF file (or tap the 3 dots on mobile) and select <strong>Share</strong> &gt; <strong>Share</strong>.</li>
+                <li>Under <em>General access</em>, change <strong>Restricted</strong> to <strong>Anyone with the link</strong>.</li>
+                <li>Ensure the role on the right is set to <strong>Viewer</strong>.</li>
+                <li>Click <strong>Copy link</strong> and paste it into the field above!</li>
+            </ol>
+            <hr style="border: 0; border-top: 1px solid #475569; margin: 12px 0;">
+            <p>💡 <em>Using OneDrive / Mega / DropBox? Just ensure link access is set to "Public" or "Anyone with link can view" before copying.</em></p>
+        </div>
     </div>
     
     <label>Message / Description</label>
@@ -205,7 +271,7 @@ a {
 <div class="note">
     <strong>💖 Thank You for Your Contribution!</strong> 
     <p style="text-align: left; margin-bottom: 0; margin-top: 8px; color: #cbd5e1; font-size: 14px;">
-        Community sharing is what keeps <strong>Learning Shelve</strong> alive. Once you submit, our team will test the link permissions, run a quick security screening, and add it to the library for everyone. We deeply appreciate your time and effort!
+        Community sharing is what keeps <strong>PDF Shelve</strong> alive. Once you submit, our team will test the link permissions, run a quick security screening, and add it to the library for everyone. We deeply appreciate your time and effort!
     </p>
 </div>
 
@@ -215,6 +281,26 @@ a {
 </div>
 
 <script>
+// --- SMART HELP DROPDOWN LOGIC ---
+const helpToggle = document.getElementById('helpToggle');
+const helpContent = document.getElementById('helpContent');
+
+helpToggle.addEventListener('click', function() {
+    this.classList.toggle('active');
+    
+    if (helpContent.style.maxHeight && helpContent.style.maxHeight !== "0px") {
+        helpContent.style.maxHeight = "0px";
+        helpContent.style.paddingTop = "0px";
+        helpContent.style.paddingBottom = "0px";
+    } else {
+        // Dynamically calculates content height for smooth sliding animation
+        helpContent.style.maxHeight = helpContent.scrollHeight + 24 + "px"; 
+        helpContent.style.paddingTop = "5px";
+        helpContent.style.paddingBottom = "12px";
+    }
+});
+
+// --- WEB3FORMS SUBMISSION LOGIC ---
 document.getElementById('contributionForm').addEventListener('submit', function(e) {
     e.preventDefault(); 
     
@@ -237,6 +323,10 @@ document.getElementById('contributionForm').addEventListener('submit', function(
         if (response.status == 200) {
             alertBox.style.display = 'block';
             form.reset(); 
+            
+            // Explicitly close help accordion panel on successful submission reset
+            helpToggle.classList.remove('active');
+            helpContent.style.maxHeight = "0px";
             
             setTimeout(() => {
                 alertBox.style.display = 'none';

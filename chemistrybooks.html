@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemistry Shelf | PDF Shelve</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #0f172a;
+    color: white;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Header Sections Styling */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+header p {
+    color: #cbd5e1;
+    font-size: 16px;
+}
+
+/* Back Link Utility Navigation */
+.nav-links {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-btn, .contrib-btn {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 15px;
+    transition: 0.2s;
+    padding: 8px 16px;
+    border-radius: 6px;
+}
+
+.back-btn {
+    color: #60a5fa;
+}
+.back-btn:hover {
+    color: #3b82f6;
+}
+
+.contrib-btn {
+    background: #10b981;
+    color: white;
+}
+.contrib-btn:hover {
+    background: #059669;
+}
+
+/* PDF Resource Responsive Display Grid */
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+/* Grid Individual Card Modules */
+.book-card {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border: 1px solid #334155;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.book-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    border-color: #3b82f6;
+}
+
+.book-info h3 {
+    font-size: 18px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.book-info .author {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 12px;
+}
+
+.tag {
+    display: inline-block;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: #1e1b4b;
+    color: #818cf8;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Download Dynamic Trigger Action Button */
+.download-btn {
+    width: 100%;
+    padding: 12px;
+    background: #3b82f6;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 15px;
+    transition: 0.2s;
+    display: inline-block;
+}
+
+.download-btn:hover {
+    background: #2563eb;
+}
+
+/* Empty Library Placeholders Alert Info box */
+.empty-notice {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px 20px;
+    background: #1e293b;
+    border-radius: 12px;
+    border: 2px dashed #334155;
+    color: #94a3b8;
+}
+
+footer {
+    text-align: center;
+    margin-top: 60px;
+    color: #64748b;
+    font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav-links">
+        <a href="index.html" class="back-btn">⬅ Back to Home</a>
+        <a href="suggestion.html" class="contrib-btn">Request or Contribute</a>
+    </div>
+
+    <header>
+        <h1>⚛️ Chemistry Library</h1>
+        <p>Explore public text resources, reference textbooks, and core study modules.</p>
+    </header>
+    
+    
+
+    <!--
+    <div class="books-grid">
+        
+        
+        <div class="book-card">
+            <div class="book-info">
+                <span class="tag">Classical Mechanics</span>
+                <h3>Chemistry for Engineers</h3>
+                <p class="author">By Dr. Gias Uddin Ahmed</p>
+            </div>
+            
+            <a href="Chemistryforengineers.html" target="_blank" class="download-btn">📥 Access PDF</a>
+        </div>
+
+        
+        <div class="book-card">
+            <div class="book-info">
+                <span class="tag">Electromagnetism</span>
+                <h3>Introduction to Electrodynamics</h3>
+                <p class="author">By David J. Griffiths</p>
+            </div>
+            <a href="https://drive.google.com/your-file-link-here" target="_blank" class="download-btn">📥 Access PDF</a>
+        </div>
+
+        
+        <div class="book-card">
+            <div class="book-info">
+                <span class="tag">Quantum Mechanics</span>
+                <h3>Principles of Quantum Mechanics</h3>
+                <p class="author">By R. Shankar</p>
+            </div>
+            <a href="https://drive.google.com/your-file-link-here" target="_blank" class="download-btn">📥 Access PDF</a>
+        </div>
+
+     -->
+         
+        <div class="empty-notice">
+            <p style="font-size: 18px; color: white; margin-bottom: 8px;">No books uploaded yet!</p>
+            <p>Be the first to help out. Click the "<b>Request or Contribute</b>" button above to submit a share link.</p>
+        </div> 
+        
+
+    </div>
+
+    <footer>
+        <p>&copy; PDF Shelve. All shared assets belong to their respective uploaders.</p>
+    </footer>
+</div>
+
+</body>
+</html>
